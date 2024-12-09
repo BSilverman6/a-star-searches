@@ -13,7 +13,7 @@ using namespace std;
 int main(){
     Graph* my_graph = new Graph();
 
-    my_graph->setUpMap(4);
+    my_graph->setUpMap(5);
 
     cout << "Hello World" <<endl;
     return 0;

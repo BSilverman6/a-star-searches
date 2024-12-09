@@ -64,49 +64,26 @@ set<Edge*> Graph::getAdjacentEdges(Node* n) {
 } */
 
 
-void Graph::setUpMap(int dimension){
-  
+void Graph::setUpMap(int dim){
+  dimension = dim;
   //sets up all Nodes
   for (int i = 0; i< dimension; i++){
-    vector<Node*> row_vec;
+    vector<Node*> my_vec;
     for (int j = 0; j<dimension; j++){
-      Node* node = new Node(i, j, FIELD);
-      row_vec.push_back(node);
+      Node* node = new Node(j, i, FIELD);
+      my_vec.push_back(node);
     }
-    nodes_map.push_back(row_vec);
+    nodes_map.push_back(my_vec);
   }
-/* 
-  //Add and Classifly Edges
-  for (int i = 0; i < dimension-1; i++){
-    for (int j = 0; j < dimension-1; j++){
-      //sets up horizontal Edges
-      Edge* horiz_edge = new Edge(nodes_map[i][j],nodes_map[i][j+1]);
-      edges.push_back(horiz_edge);
-      //sets up Vertical Edges
-      Edge* vert_edge = new Edge(nodes_map[i][j],nodes_map[i+1][j]);
-      edges.push_back(vert_edge);
-      
-      //No Diagonal Edges if any one of the four is a WALL
-      //sets up Diagonal Edge
-      Edge* diag_edge = new Edge(nodes_map[i][j],nodes_map[i+1][j+1]);
-      edges.push_back(diag_edge);
-      //sets Up Other Diagonal Edge
-      Edge* diag_edge2 = new Edge(nodes_map[i+1][j],nodes_map[i][j+1]);
-      edges.push_back(diag_edge2);
 
-    }
-  }
-  //sets up the last of the edges
-  for (int k = 0; k<dimension-1; k++){
-    Edge* horiz_edge = new Edge(nodes_map[dimension-1][k],nodes_map[dimension-1][k+1]);
-    edges.push_back(horiz_edge);
-    Edge* vert_edge = new Edge(nodes_map[k][dimension-1],nodes_map[k+1][dimension-1]);
-    edges.push_back(vert_edge);
-  } */
+  //For Testing Purposes
+  nodes_map[2][2]->setTerrainType(WALL);
+  set<Node*> my_set = getValidNeighbors(nodes_map[2][3]);
+  cout<< "Check the Set!" << endl;
 }
 
 //This is IT! The Algorithm
-queue <Node*>  Graph::getShortestPath(Node* start, Node* end){
+//queue <Node*>  Graph::getShortestPath(Node* start, Node* end){
   //Make a PQueue
   //Make a Travel Time Float
   //Pop from the PQueue (Start)
@@ -120,4 +97,51 @@ queue <Node*>  Graph::getShortestPath(Node* start, Node* end){
     //compare the value and delete/re-insert into pque if smaller
     //IF EXPLORED
     //do nothing.
+//}
+
+//This is where I switch from "Computer Array Axes" to 
+//standard math array axes
+//nodes_map[row (y)][column (x)]
+set <Node*> Graph::getValidNeighbors (Node* my_node){
+  set <Node*> ret;
+  int x = my_node->getXCo();
+  int y = my_node->getYCo();
+
+  //8 possible neighbors
+  //t-top, b-bottom, l-left, r-right
+  bool tl = true;
+  bool t = true;
+  bool tr = true;
+  bool r = true;
+  bool br = true;
+  bool b = true;
+  bool bl = true;
+  bool l = true;
+
+  if (x == 0 || nodes_map[y][x-1]->getTerrainType() == WALL){
+    tl = false; l = false; bl = false;
+  }
+  if (y == 0|| nodes_map[y-1][x]->getTerrainType() == WALL){
+    bl = false; b = false; br = false;
+  }
+  if (x == dimension-1|| nodes_map[y][x+1]->getTerrainType() == WALL){
+    br = false; r = false; tr = false;
+  }
+  if (y == dimension-1|| nodes_map[y+1][x]->getTerrainType() == WALL){
+    tr = false; t = false; tl = false;
+  }
+
+  if (t){ret.insert(nodes_map[y+1][x]);}
+  if (r){ret.insert(nodes_map[y][x+1]);}
+  if (b){ret.insert(nodes_map[y-1][x]);}
+  if (l){ret.insert(nodes_map[y][x-1]);}
+
+  if (tl && nodes_map[y+1][x-1]->getTerrainType() != WALL){ret.insert(nodes_map[y+1][x-1]);}
+  if (tr && nodes_map[y+1][x+1]->getTerrainType() != WALL){ret.insert(nodes_map[y+1][x+1]);}
+  if (br && nodes_map[y-1][x+1]->getTerrainType() != WALL){ret.insert(nodes_map[y-1][x+1]);}
+  if (bl && nodes_map[y-1][x-1]->getTerrainType() != WALL){ret.insert(nodes_map[y-1][x-1]);}
+
+  return ret;
+
+
 }

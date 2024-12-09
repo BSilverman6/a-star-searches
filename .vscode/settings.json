@@ -5,6 +5,9 @@
         "queue": "cpp",
         "__split_buffer": "cpp",
         "deque": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "cmath": "cpp",
+        "memory": "cpp",
+        "set": "cpp"
     }
 }
