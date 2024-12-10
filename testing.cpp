@@ -1,9 +1,7 @@
-#include "Graph.h"
-#include "Node.h"
-#include "Edge.h"
-#include "Graph.cpp"
-#include "Node.cpp"
-#include "Edge.cpp"
+#include "Grid.h"
+#include "Tile.h"
+#include "Grid.cpp"
+#include "Tile.cpp"
 
 
 #include <iostream>
@@ -11,9 +9,9 @@
 using namespace std;
 
 int main(){
-    Graph* my_graph = new Graph();
+    Grid* my_grid = new Grid();
 
-    my_graph->setUpMap(5);
+    my_grid->setUpMap(5);
 
     cout << "Hello World" <<endl;
     return 0;
