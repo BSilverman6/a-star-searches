@@ -11,6 +11,9 @@
 
 using namespace std;
 
+/* Note that All Print related functions are at 
+the bottom of this file the rest can be found in
+the order of the .h file.*/
 
 Grid::Grid() {
 }
@@ -35,50 +38,37 @@ void Grid::setUpMap(int dim){
     tiles_map.push_back(my_vec);
   }
 
-//Testing below here
-  tiles_map[4][1]->setTerrainType(WALL);
-  tiles_map[4][2]->setTerrainType(WALL);
-  tiles_map[4][3]->setTerrainType(WALL);
-  tiles_map[4][4]->setTerrainType(WALL);
-  tiles_map[4][5]->setTerrainType(WALL);
-  tiles_map[4][6]->setTerrainType(WALL);
-  /* tiles_map[4][7]->setTerrainType(BRAMBLE);
-  tiles_map[4][8]->setTerrainType(BRAMBLE);
-  tiles_map[3][7]->setTerrainType(BRAMBLE);
-  tiles_map[3][8]->setTerrainType(BRAMBLE);
-  tiles_map[5][8]->setTerrainType(BRAMBLE);
-  tiles_map[5][7]->setTerrainType(BRAMBLE); */
-
-
-
-  //Testing purposes
 }
 
-double Grid::calc_h_cost(Tile* tile, Tile* end){
-  int t_x = tile->getXCoord();
-  int t_y = tile->getYCoord();
-  int e_x = end->getXCoord();
-  int e_y = end->getYCoord();
-  int dx = abs(t_x - e_x);
-  int dy = abs(t_y - e_y);
-  double dist = (dx+dy)+(sqrt(2)-(2))*min(dx,dy);
-  return dist;
-}
 
-//This is IT! The Algorithm
 vector <Tile*>  Grid::getShortestPath(int sx, int sy, int ex, int ey){
+  
+  //identifies starting and ending tiles based on coordinates
   Tile* start = tiles_map[sy][sx];
   Tile* end = tiles_map[ey][ex];
   
+  //Debating if I'll use this... forgot about it in the rest of the code
+  //solely to optimize cleanup at the end
   set <Tile*> active_tiles; //All tiles that I'm using are in here
   active_tiles.insert(start);
-      print_grid();
+
+  print_grid();
+
+  //Updates the relevant first tile search states
   start->setSearchStat(EXPLORED);
   start->setGCost(0);
-      print_grid();
-  a_star_queue next_best_move;
-  Tile* current_tile = start;
 
+  print_grid();
+
+  //initialize the priority queue and set's the 
+  //"cursor" Tile*
+  a_star_queue next_best_move;
+  Tile* current_tile = start; 
+
+  //This is the bulk of the algorithm
+  //Get's and Updates (if needed) the neighbor(s) of the "cursor"
+  //Updates include: h_cost, g_cost, f_cost (calculated in setCost()), and
+    //a pointer to the current tile for path record keeping purposes
   do{
     set <Tile*> neighbors = getValidNeighbors(current_tile);
     for (auto n: neighbors){
@@ -89,6 +79,9 @@ vector <Tile*>  Grid::getShortestPath(int sx, int sy, int ex, int ey){
         double h_cost = calc_h_cost(n, end);
         double g_cost = current_tile->getGCost()+calc_travel_time(current_tile, n);
 
+        //Updates if this neighbor is a newly explored tile OR if a better path was found.
+        //adds the updated tile to the pqueue
+        //duplicates ARE added to the pqueue
         if (n_search_stat == FAR||
             (n_search_stat == FRONTIER && n->getFCost()> h_cost+g_cost)){
           n->setCosts(h_cost,g_cost,current_tile);
@@ -98,39 +91,55 @@ vector <Tile*>  Grid::getShortestPath(int sx, int sy, int ex, int ey){
     }
 
     //discards any previously explored tiles
-    //that remain in the queue ()
+    //that remain at the front of the queue ()
+    //sets the next current tile to the next best option
     do{
       current_tile = next_best_move.top();
       next_best_move.pop();
     } while (current_tile->getSearchStat() == EXPLORED && !next_best_move.empty());
 
     print_grid();
+
+    //current Tile set to Explored
     current_tile->setSearchStat(EXPLORED);
 
+  //If the current Tile is the end, I've made it!
+  //the main loop will exit here if everything accessible has been
+  //explored and no frontier tiles remain for exploring.
   }while (current_tile !=end && !next_best_move.empty());
+  
   //Follows the Exit back to the Entrance
-  vector <Tile*> ret;
-  Tile* path_tile = current_tile;
-  ret.push_back(path_tile);
-  path_tile->setSearchStat(PATH);
-  do{
-    path_tile = path_tile->getLastVisited();
-    ret.push_back(path_tile);
+  //Updates Tile search type to PATH and adds the Tile* to
+  //a vector. Only adds to the path if I found the End Goal.
+  vector <Tile*> shortest_path;
+  if (current_tile == end){
+    Tile* path_tile = current_tile;
+    shortest_path.push_back(path_tile);
     path_tile->setSearchStat(PATH);
+    do{
+      path_tile = path_tile->getLastVisited();
+      shortest_path.push_back(path_tile);
+      path_tile->setSearchStat(PATH);
 
-  } while(path_tile != start);
+    } while(path_tile != start);
+  }
 
-      print_grid();
+  print_grid();
 
+  //Clears the Search Status of everything
   for(auto v: tiles_map){
     for (auto t: v){
       t->clearSearchStatus();
     }
   }
 
-    print_grid();
-  return ret;
+  print_grid();
+
+  return shortest_path;
 }
+
+
+
 
 //Confusing Note - Here I visualize x and y in
 //a positive cartesian coordinate system
@@ -139,6 +148,7 @@ vector <Tile*>  Grid::getShortestPath(int sx, int sy, int ex, int ey){
 //bottom right.
 //
 //tiles_map[row (y)][column (x)]
+
 set <Tile*> Grid::getValidNeighbors (Tile* my_tile){
   set <Tile*> ret;
   int x = my_tile->getXCoord();
@@ -185,7 +195,7 @@ set <Tile*> Grid::getValidNeighbors (Tile* my_tile){
   return ret;
 }
 
-//untested
+
 //works based on printed numbers in printed Visual!
 double Grid::calc_travel_time (Tile* current, Tile* neighbor){
   //2 fields
@@ -209,6 +219,19 @@ double Grid::calc_travel_time (Tile* current, Tile* neighbor){
   return ret;
 }
 
+
+
+double Grid::calc_h_cost(Tile* tile, Tile* end){
+  int t_x = tile->getXCoord();
+  int t_y = tile->getYCoord();
+  int e_x = end->getXCoord();
+  int e_y = end->getYCoord();
+  int dx = abs(t_x - e_x);
+  int dy = abs(t_y - e_y);
+  
+  double dist = (dx+dy)+(sqrt(2)-(2))*min(dx,dy);
+  return dist;
+}
 
 //----------------Printing Functions Below--------------------//
 
@@ -259,10 +282,31 @@ string Grid::setTopLabel(Tile* tile){
 }
 
 string Grid::setBottomLabel(Tile* tile){
-  if (tile->getTerrainType() == BRAMBLE){
+  if (tile->getTerrainType() == BRAMBLE && tile->getOccupiedStat() != EMPTY){
+    if(tile->getOccupiedStat() == START){
+      return "*STAR*";
+    }
+    else return "*END!*";
+  }
+  
+  else if (tile->getTerrainType() == BRAMBLE){
     return "*____*";
   }
+
+  else if (tile->getOccupiedStat() == END){
+    return "_Hero_";
+  }
+
+  else if (tile->getOccupiedStat() == START){
+    return "_EVIL_";
+  }
   else return "______";
+
+}
+
+void Grid::addCharacters(int sx, int sy, int ex, int ey){
+  tiles_map[sy][sx]->setOccupiedStat(START);
+  tiles_map[ey][ex]->setOccupiedStat(END);
 }
 
 void Grid::print_grid(){
@@ -287,5 +331,5 @@ void Grid::print_grid(){
     }
     cout<<endl;
   }
-  cout<< "\033[0m" <<endl;
+  cout<< RESET <<endl;
 }

@@ -32,6 +32,8 @@ https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
 #define FRONTIERCOLOR "\x1b[40;31;1m" //Red
 #define EXPLOREDCOLOR "\x1b[40;36;1m" //Cyan
 #define PATHCOLOR "\x1b[40;33;1m" //Yellow
+#define RESET   "\033[0m"
+
 
 
 //The Priority Queue for picking which frontier tile
@@ -54,15 +56,19 @@ public:
   //indices are 0:dimension-1
   void setUpMap(int dimension);
 
-  //The A* Search Algorithm!
-  //Returns a vector of Tiles* that has the shortest path
-  //from Sx,Sy to Ex,Ey
-  //The vector is sorted End Tile* --> Start Tile*
+  /* The A* Search Algorithm!
+  Returns a vector of Tiles* that has the shortest pathfrom Sx,Sy to Ex,Ey
+  The return vector is sorted End Tile* --> Start Tile* 
+  Returns empty if no path was found*/
   vector <Tile*> getShortestPath(int sx, int sy, int ex, int ey);
 
   //Prints the Grid in a visual Way :)
   //Great for Debugging.
   void print_grid();
+  
+  //Added for Final Visuals
+  void addCharacters(int sx, int sy, int ex, int ey);
+
   
 private:
 
@@ -95,7 +101,6 @@ private:
   string setMidLabel(Tile* tile);
   string setTopLabel(Tile* tile);
   string setBottomLabel(Tile* tile);
-
 };
 
 

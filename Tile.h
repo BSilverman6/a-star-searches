@@ -17,6 +17,11 @@ using namespace std;
 #define EXPLORED 22
 #define PATH 23
 
+//Tile Occupation Stats
+#define EMPTY 30
+#define START 31
+#define END 32
+
 
 
 class Tile {
@@ -43,7 +48,8 @@ public:
 
 //For Creativity in Debugging.
 //I need Walls and Brambles to Test the algorithm
-  void setTerrainType(int tt);
+//Public for testing purposes, otherwise it'd be private.
+  void setTerrainType(int tt); 
 
 //Resets the variables used in the Search
   void clearSearchStatus();
@@ -62,6 +68,8 @@ public:
   void setSearchStat(int ss);
   int getSearchStat();
   Tile* getLastVisited();
+  void setOccupiedStat(int os);
+  int getOccupiedStat();
 
   
   //Operator for sorting in the priority queue
@@ -90,6 +98,9 @@ private:
   double f_cost; //f-cost, sum of g+h costs.
   int search_stat; // far, frontier, explored, or path
   Tile* last_visited; //the Tile that gave this one it's lowest f cost
+
+  int occupied_stat;
+
 
   
 

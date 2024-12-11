@@ -14,6 +14,8 @@ Tile::Tile(int x, int y) {
   f_cost = -1;
   last_visited = nullptr;
   search_stat = FAR;
+
+  occupied_stat = EMPTY;
 }
 
 Tile::~Tile() {
@@ -75,6 +77,14 @@ int Tile::getSearchStat(){
 
 Tile* Tile::getLastVisited(){
   return last_visited;
+}
+
+void Tile::setOccupiedStat(int os){
+  occupied_stat = os;
+}
+
+int Tile::getOccupiedStat(){
+  return occupied_stat;
 }
 
 
