@@ -58,12 +58,15 @@ public:
   void setGCost(double g);
 
   //Other Getters and Setters
+
   void setSearchStat(int ss);
   int getSearchStat();
   Tile* getLastVisited();
 
   
-
+  //Operator for sorting in the priority queue
+  //First looks at FCost,
+  //if tied, picks the lower h cost (aka the one closer to the finish)
   bool operator()(Tile* a, Tile* b){
   if (a->f_cost > b->f_cost){
     return true;
@@ -75,17 +78,18 @@ public:
   };
 
 private:
+
   int terrain_type;  // Feild, Water, etc.
-  int x_co;
-  int y_co;
+  int x_co; //x coordinate in the grid [o:dimension)
+  int y_co; //y coordinate in the grid [o:dimension)
 
   //Data for the Algorithm!
   //Used in Search Status 
   double h_cost; //h-cost, hueristic function - Time to Goal + Terrain Bunch Mod(?)
   double g_cost; //g-cost, sum of all travel_times, includes cost to get to this one
   double f_cost; //f-cost, sum of g+h costs.
-  int search_stat;
-  Tile* last_visited;
+  int search_stat; // far, frontier, explored, or path
+  Tile* last_visited; //the Tile that gave this one it's lowest f cost
 
   
 
