@@ -42,7 +42,6 @@ void Grid::setUpMap(int dim){
 
 
 vector <Tile*>  Grid::getShortestPath(int sx, int sy, int ex, int ey){
-  
   //identifies starting and ending tiles based on coordinates
   Tile* start = tiles_map[sy][sx];
   Tile* end = tiles_map[ey][ex];
@@ -70,6 +69,9 @@ vector <Tile*>  Grid::getShortestPath(int sx, int sy, int ex, int ey){
   //Updates include: h_cost, g_cost, f_cost (calculated in setCost()), and
     //a pointer to the current tile for path record keeping purposes
   do{
+    //current Tile set to Explored
+    current_tile->setSearchStat(EXPLORED);
+
     set <Tile*> neighbors = getValidNeighbors(current_tile);
     for (auto n: neighbors){
       int n_search_stat = n->getSearchStat();
@@ -100,13 +102,10 @@ vector <Tile*>  Grid::getShortestPath(int sx, int sy, int ex, int ey){
 
     print_grid();
 
-    //current Tile set to Explored
-    current_tile->setSearchStat(EXPLORED);
-
   //If the current Tile is the end, I've made it!
-  //the main loop will exit here if everything accessible has been
-  //explored and no frontier tiles remain for exploring.
-  }while (current_tile !=end && !next_best_move.empty());
+  //If the current tile is EXPLORED, then the pqueue must be empty
+  //If the pqueue is empty, then I've hit a dead end, so program exits to avoid infity
+  }while (current_tile !=end  && current_tile->getSearchStat() == FRONTIER);
   
   //Follows the Exit back to the Entrance
   //Updates Tile search type to PATH and adds the Tile* to
@@ -134,7 +133,7 @@ vector <Tile*>  Grid::getShortestPath(int sx, int sy, int ex, int ey){
   }
 
   print_grid();
-
+  
   return shortest_path;
 }
 
