@@ -77,8 +77,8 @@ vector <Tile*>  Grid::getShortestPath(int sx, int sy, int ex, int ey){
       if (n_search_stat != EXPLORED){
         
         //calc all the things
-        double h_cost = calc_h_cost(n, end);
-        double g_cost = current_tile->getGCost()+calc_travel_time(current_tile, n);
+        int h_cost = calc_h_cost(n, end);
+        int g_cost = current_tile->getGCost()+calc_travel_time(current_tile, n);
 
         //Updates if this neighbor is a newly explored tile OR if a better path was found.
         //adds the updated tile to the pqueue
@@ -195,10 +195,10 @@ set <Tile*> Grid::getValidNeighbors (Tile* my_tile){
 
 
 //works based on printed numbers in printed Visual!
-double Grid::calc_travel_time (Tile* current, Tile* neighbor){
+int Grid::calc_travel_time (Tile* current, Tile* neighbor){
   //2 fields
   double modifier = 1.0;
-  double distance = 1.0;
+  int distance = 10;
 
   if ((current->getTerrainType() == BRAMBLE && neighbor->getTerrainType() == FIELD)
       || (current->getTerrainType() == FIELD && neighbor->getTerrainType() == BRAMBLE)){
@@ -209,17 +209,17 @@ double Grid::calc_travel_time (Tile* current, Tile* neighbor){
   }
 
   if (current->getXCoord() != neighbor->getXCoord() && current->getYCoord() != neighbor->getYCoord()){
-    distance = 1.41;
+    distance = 14;
   }
 
-  double ret = modifier*distance;
+  int ret = modifier*distance;
   ret = round(ret*100)/100;
   return ret;
 }
 
 
 
-double Grid::calc_h_cost(Tile* tile, Tile* end){
+int Grid::calc_h_cost(Tile* tile, Tile* end){
   int t_x = tile->getXCoord();
   int t_y = tile->getYCoord();
   int e_x = end->getXCoord();
@@ -227,7 +227,7 @@ double Grid::calc_h_cost(Tile* tile, Tile* end){
   int dx = abs(t_x - e_x);
   int dy = abs(t_y - e_y);
   
-  double dist = (dx+dy)+(sqrt(2)-(2))*min(dx,dy);
+  int dist = (dx+dy)*10+(14-(20))*min(dx,dy);
   return dist;
 }
 
@@ -257,7 +257,6 @@ string Grid::setMidLabel(Tile* tile){
 
   else if (tile->getSearchStat() == FRONTIER){
     string str = to_string(tile->getFCost());
-    str.resize(6);
     return str;
   }
 

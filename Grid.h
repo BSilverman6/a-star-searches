@@ -91,12 +91,12 @@ private:
   //Tile <--> Corner is 1.4 Times Slower
   //Bramble <--> Bramble is 2 Times Slower
   //Terrain based tile location based modifiers stack.
-  double calc_travel_time (Tile* current, Tile* neighbor);
+  int calc_travel_time (Tile* current, Tile* neighbor);
   
   //Heuristic for determining the distance to the End Point
   //adapted from Diagonal Distance https://www.geeksforgeeks.org/a-search-algorithm/
   //originally I used the cartesian formula distance between 2 points.
-  double calc_h_cost(Tile* tile, Tile* end);
+  int calc_h_cost(Tile* tile, Tile* end);
 
   //The Following are for Grid Visuals
   //Great for Debugging!

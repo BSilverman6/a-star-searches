@@ -44,8 +44,8 @@ public:
   int getTerrainType();
   int getXCoord();
   int getYCoord();
-  double getFCost();
-  double getGCost(); //based on optimal Tile* Last Visited
+  int getFCost();
+  int getGCost(); //based on optimal Tile* Last Visited
 
   //For Creativity in Debugging.
   //I need Walls and Brambles to Test the algorithm
@@ -58,11 +58,11 @@ public:
   //set's the costs used in A* Search
   //Only get's called if this specific tile is
   //either FAR or a more efficient path to it is found
-  void setCosts(double h, double g, Tile* curr);
+  void setCosts(int h, int g, Tile* curr);
   
   //Only used to set the g_cost of the starting
   //Tile to 0.
-  void setGCost(double g);
+  void setGCost(int g);
 
   //Other Getters and Setters
 
@@ -94,9 +94,9 @@ private:
 
   //Data for the Algorithm!
   //Used in Search Status 
-  double h_cost; //h-cost, hueristic function - Time to Goal + Terrain Bunch Mod(?)
-  double g_cost; //g-cost, sum of all travel_times, includes cost to get to this one
-  double f_cost; //f-cost, sum of g+h costs.
+  int h_cost; //h-cost, hueristic function - Time to Goal + Terrain Bunch Mod(?)
+  int g_cost; //g-cost, sum of all travel_times, includes cost to get to this one
+  int f_cost; //f-cost, sum of g+h costs.
   int search_stat; // far, frontier, explored, or path
   Tile* last_visited; //the Tile that gave this one it's lowest f cost
 

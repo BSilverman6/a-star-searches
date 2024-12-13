@@ -33,11 +33,11 @@ int Tile::getYCoord(){
   return y_co;
 }
 
-double Tile::getFCost(){
+int Tile::getFCost(){
   return f_cost;
 }
 
-double Tile::getGCost(){
+int Tile::getGCost(){
   return g_cost;
 }
 
@@ -54,7 +54,7 @@ void Tile::clearSearchStatus(){
 }
 
 
-void Tile::setCosts(double h, double g, Tile* curr){
+void Tile::setCosts(int h, int g, Tile* curr){
   h_cost = h;
   g_cost = g;
   f_cost = h+g;
@@ -62,7 +62,7 @@ void Tile::setCosts(double h, double g, Tile* curr){
   last_visited = curr;
 }
 
-void Tile::setGCost(double g){
+void Tile::setGCost(int g){
   g_cost = g;
 }
 
