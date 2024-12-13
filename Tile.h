@@ -1,6 +1,7 @@
 #ifndef TILE_H__
 #define TILE_H__
 
+//Everytime I deleted this, i got a compile error 
 #include <iostream>
 
 
@@ -18,9 +19,9 @@ using namespace std;
 #define PATH 23
 
 //Tile Occupation Stats
-#define EMPTY 30
-#define START 31
-#define END 32
+#define EMPTY 30 //most everything
+#define START 31 //where the villian stands
+#define END 32 //where the hero stands
 
 
 
@@ -46,12 +47,12 @@ public:
   double getFCost();
   double getGCost(); //based on optimal Tile* Last Visited
 
-//For Creativity in Debugging.
-//I need Walls and Brambles to Test the algorithm
-//Public for testing purposes, otherwise it'd be private.
+  //For Creativity in Debugging.
+  //I need Walls and Brambles to Test the algorithm
+  //Public for testing purposes, otherwise it'd be private.
   void setTerrainType(int tt); 
 
-//Resets the variables used in the Search
+  //Resets the variables used in the Search
   void clearSearchStatus();
 
   //set's the costs used in A* Search

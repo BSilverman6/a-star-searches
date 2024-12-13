@@ -22,7 +22,7 @@ Cyan 6
 White 7
 
 I Used a lot of sources to find these, most of which were
-informationless forums found through google
+semi-relevant forums found through google
 Unfortunately, I can't find the first one I used that was good
 but here are two others.
 https://stackoverflow.com/questions/33309136/change-color-in-os-x-console-output
@@ -32,7 +32,7 @@ https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
 #define FRONTIERCOLOR "\x1b[40;31;1m" //Red
 #define EXPLOREDCOLOR "\x1b[40;36;1m" //Cyan
 #define PATHCOLOR "\x1b[40;33;1m" //Yellow
-#define RESET   "\033[0m"
+#define RESET   "\x1b[0m"
 
 
 
@@ -62,6 +62,7 @@ public:
   Returns empty if no path was found*/
   vector <Tile*> getShortestPath(int sx, int sy, int ex, int ey);
 
+
   //Prints the Grid in a visual Way :)
   //Great for Debugging.
   void print_grid();
@@ -89,10 +90,12 @@ private:
   //Bramble <-->Field is 1.5 Times slower
   //Tile <--> Corner is 1.4 Times Slower
   //Bramble <--> Bramble is 2 Times Slower
+  //Terrain based tile location based modifiers stack.
   double calc_travel_time (Tile* current, Tile* neighbor);
   
   //Heuristic for determining the distance to the End Point
   //adapted from Diagonal Distance https://www.geeksforgeeks.org/a-search-algorithm/
+  //originally I used the cartesian formula distance between 2 points.
   double calc_h_cost(Tile* tile, Tile* end);
 
   //The Following are for Grid Visuals
