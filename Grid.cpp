@@ -42,17 +42,14 @@ void Grid::setUpMap(int dim){
 
 
 vector <Tile*>  Grid::getShortestPath(int sx, int sy, int ex, int ey){
-  //identifies starting and ending tiles based on coordinates
+  //identifies starting and ending tiles based on cartesian coordinates
   Tile* start = tiles_map[sy][sx];
   Tile* end = tiles_map[ey][ex];
   
   print_grid();
 
   //Updates the relevant first tile search states
-  start->setSearchStat(EXPLORED);
   start->setGCost(0);
-
-  print_grid();
 
   //initialize the priority queue and set's the 
   //"cursor" Tile.

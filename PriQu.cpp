@@ -52,7 +52,7 @@ void percolate_up_pq (pq*& queue, int young_index){
     int parent_index = (young_index-1)/2;
     if (queue->active_frontiers[young_index]->getFCost() < queue->active_frontiers[parent_index]->getFCost()
         || (queue->active_frontiers[young_index]->getFCost() == queue->active_frontiers[parent_index]->getFCost()
-        && queue->active_frontiers[young_index]->getHCost() < queue->active_frontiers[parent_index]->getFCost())){
+        && queue->active_frontiers[young_index]->getHCost() < queue->active_frontiers[parent_index]->getHCost())){
       swap_pq (queue, young_index, parent_index);
       percolate_up_pq(queue, parent_index);
     }
