@@ -41,6 +41,10 @@ int Tile::getGCost(){
   return g_cost;
 }
 
+int Tile::getHCost(){
+  return h_cost;
+}
+
 void Tile::setTerrainType(int tt){
   terrain_type = tt;
 }

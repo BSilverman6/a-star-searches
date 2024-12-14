@@ -1,5 +1,6 @@
 #include "Grid.h"
 #include "Tile.h"
+#include "PriQu.h"
 
 #include <iostream>
 #include <iomanip>
@@ -45,11 +46,6 @@ vector <Tile*>  Grid::getShortestPath(int sx, int sy, int ex, int ey){
   Tile* start = tiles_map[sy][sx];
   Tile* end = tiles_map[ey][ex];
   
-  //Debating if I'll use this... forgot about it in the rest of the code
-  //solely to optimize cleanup at the end
-  set <Tile*> active_tiles; //All tiles that I'm using are in here
-  active_tiles.insert(start);
-
   print_grid();
 
   //Updates the relevant first tile search states
@@ -60,7 +56,8 @@ vector <Tile*>  Grid::getShortestPath(int sx, int sy, int ex, int ey){
 
   //initialize the priority queue and set's the 
   //"cursor" Tile*
-  a_star_queue next_best_move;
+  // a_star_queue next_best_move; //ARCHIVED
+  pq* frontier_pq = new pq;
   Tile* current_tile = start; 
 
   //This is the bulk of the algorithm
@@ -82,29 +79,35 @@ vector <Tile*>  Grid::getShortestPath(int sx, int sy, int ex, int ey){
 
         //Updates if this neighbor is a newly explored tile OR if a better path was found.
         //adds the updated tile to the pqueue
-        //duplicates ARE added to the pqueue
-        if (n_search_stat == FAR||
-            (n_search_stat == FRONTIER && n->getFCost()> h_cost+g_cost)){
+        //duplicates updated;
+        if (n_search_stat == FAR){
           n->setCosts(h_cost,g_cost,current_tile);
-          next_best_move.push(n);
+          insert_pq(frontier_pq, n);
+        }
+        if (n_search_stat == FRONTIER && n->getFCost()> h_cost+g_cost){
+          n->setCosts(h_cost,g_cost,current_tile);
+          update_priority(frontier_pq, n);
         }
       }
     }
 
+    //Archived
     //discards any previously explored tiles
     //that remain at the front of the queue ()
     //sets the next current tile to the next best option
-    do{
+    /* do{
       current_tile = next_best_move.top();
       next_best_move.pop();
-    } while (current_tile->getSearchStat() == EXPLORED && !next_best_move.empty());
+    } while (current_tile->getSearchStat() == EXPLORED && !next_best_move.empty()); */
+
+    current_tile = remove_pq(frontier_pq);
 
     print_grid();
 
   //If the current Tile is the end, I've made it!
-  //If the current tile is EXPLORED, then the pqueue must be empty
-  //If the pqueue is empty, then I've hit a dead end, so program exits to avoid infity
-  }while (current_tile !=end  && current_tile->getSearchStat() == FRONTIER);
+  //If the current tile is NULL, then I've exhausted all frontier explores, 
+    //I've hit a dead end, so program exits to avoid infity
+  }while (current_tile !=end  && current_tile !=nullptr);
   
   //Follows the Exit back to the Entrance
   //Updates Tile search type to PATH and adds the Tile* to

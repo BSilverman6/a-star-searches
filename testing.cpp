@@ -1,6 +1,7 @@
 
 #include "Grid.cpp"
 #include "Tile.cpp"
+#include "PriQu.cpp"
 
 
 #include <iostream>

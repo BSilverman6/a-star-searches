@@ -46,6 +46,7 @@ public:
   int getYCoord();
   int getFCost();
   int getGCost(); //based on optimal Tile* Last Visited
+  int getHCost();
 
   //For Creativity in Debugging.
   //I need Walls and Brambles to Test the algorithm
