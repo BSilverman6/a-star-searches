@@ -1,6 +1,5 @@
 #include "PriQu.h"
 
-#include <iostream>
 using namespace std;
 // Implement this after defining struct in .h file
 pq* init_priority_queue() {
@@ -19,17 +18,17 @@ void insert_pq(pq*& queue, Tile* tile){
   queue->active_frontiers[queue->size] = tile;
   queue->size++;
 
-  percolate_up (queue, queue->size-1);
+  percolate_up_pq (queue, queue->size-1);
 }
 
 Tile* remove_pq(pq*& queue) {
   if (queue->size == 0){
     return nullptr;
   }
-  swap (queue, 0, queue->size-1);
+  swap_pq (queue, 0, queue->size-1);
   queue->size--;
 
-  percolate_down (queue, 0);
+  percolate_down_pq (queue, 0);
 
   //copies the Tile* removed.
   Tile* the_tile = queue->active_frontiers[queue->size];
@@ -40,13 +39,13 @@ Tile* remove_pq(pq*& queue) {
   return the_tile;
 }
 
-void swap (pq*& queue, int s, int w){
+void swap_pq (pq*& queue, int s, int w){
   Tile* temp = queue->active_frontiers[s];
   queue->active_frontiers[s] = queue->active_frontiers[w];
   queue->active_frontiers[w] = temp;
 }
 
-void percolate_up (pq*& queue, int young_index){
+void percolate_up_pq (pq*& queue, int young_index){
   if (young_index>0) {
     //if node is greater priority, swap index and parent
     //call percolate_up on parent
@@ -54,15 +53,15 @@ void percolate_up (pq*& queue, int young_index){
     if (queue->active_frontiers[young_index]->getFCost() < queue->active_frontiers[parent_index]->getFCost()
         || (queue->active_frontiers[young_index]->getFCost() == queue->active_frontiers[parent_index]->getFCost()
         && queue->active_frontiers[young_index]->getHCost() < queue->active_frontiers[parent_index]->getFCost())){
-      swap (queue, young_index, parent_index);
-      percolate_up(queue, parent_index);
+      swap_pq (queue, young_index, parent_index);
+      percolate_up_pq(queue, parent_index);
     }
     
   }
 
 }
 
-void percolate_down(pq*& queue, int top_index){
+void percolate_down_pq(pq*& queue, int top_index){
   Tile* high_node = queue->active_frontiers[0];
   int ch1_index = (top_index*2)+1;
   int ch2_index = (top_index*2)+2;
@@ -77,22 +76,22 @@ void percolate_down(pq*& queue, int top_index){
   }
   
   if (num_children == 2){
-    int higher_pr_child_index = get_high_pr_index (queue, ch1_index, ch2_index);
-    int highest_pr_of_3 = get_high_pr_index (queue, top_index, higher_pr_child_index);
+    int higher_pr_child_index = get_high_pr_index_pq (queue, ch1_index, ch2_index);
+    int highest_pr_of_3 = get_high_pr_index_pq (queue, top_index, higher_pr_child_index);
 
     //if the highest priority is a child, swap with top index with child, percolate down the child
     if (highest_pr_of_3 == higher_pr_child_index){
-      swap (queue, top_index, higher_pr_child_index);
-      percolate_down (queue, higher_pr_child_index);
+      swap_pq (queue, top_index, higher_pr_child_index);
+      percolate_down_pq (queue, higher_pr_child_index);
     }
   }
 
   else if (num_children == 1){
-    int highest_pr_of_2 = get_high_pr_index (queue, top_index, ch1_index);
+    int highest_pr_of_2 = get_high_pr_index_pq (queue, top_index, ch1_index);
 
     if (highest_pr_of_2 == ch1_index){
-      swap (queue, top_index, ch1_index);
-      percolate_down (queue, ch1_index);
+      swap_pq (queue, top_index, ch1_index);
+      percolate_down_pq (queue, ch1_index);
     }
   }
   
@@ -107,7 +106,7 @@ void percolate_down(pq*& queue, int top_index){
 
 }
 
-int get_high_pr_index (pq* queue, int index_1, int index_2){
+int get_high_pr_index_pq (pq* queue, int index_1, int index_2){
     if (queue->active_frontiers[index_1]->getFCost() < queue->active_frontiers[index_2]->getFCost()){
       return index_1;
     }
@@ -121,10 +120,10 @@ int get_high_pr_index (pq* queue, int index_1, int index_2){
     else return index_2;
   }
 
-void update_priority (pq*& queue, Tile* tile){
+void update_priority_pq (pq*& queue, Tile* tile){
   for (int i = 0; i<queue->size; i++){
     if (queue->active_frontiers[i] == tile){
-      percolate_up(queue, i);
+      percolate_up_pq(queue, i);
       return;
     }
   }

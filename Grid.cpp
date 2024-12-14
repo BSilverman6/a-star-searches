@@ -84,7 +84,7 @@ vector <Tile*>  Grid::getShortestPath(int sx, int sy, int ex, int ey){
         }
         if (n_search_stat == FRONTIER && n->getFCost()> h_cost+g_cost){
           n->setCosts(h_cost,g_cost,current_tile);
-          update_priority(frontier_pq, n);
+          update_priority_pq(frontier_pq, n);
         }
       }
     }

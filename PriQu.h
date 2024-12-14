@@ -1,7 +1,6 @@
 #ifndef PRIQU_H__
 #define PRIQU_H__
 
-#include <memory>
 #include "Tile.h"
 using namespace std;
 
@@ -39,21 +38,21 @@ void insert_pq(pq*& queue, Tile* tile);
 Tile* remove_pq(pq*& queue);
 
 //Swaps two indices in a given queue's the_queue
-void swap (pq*& queue, int s, int w);
+void swap_pq (pq*& queue, int s, int w);
 
 //percolates the selected index up
-void percolate_up (pq*& queue, int young_index);
+void percolate_up_pq (pq*& queue, int young_index);
 
 //percolates the selected index down. Prioritizes swapping
 //with the higher priority child index.
-void percolate_down(pq*& queue, int high_index);
+void percolate_down_pq(pq*& queue, int high_index);
 
 //compares two indicies in the heap structure
-int get_high_pr_index (pq* queue, int index_1, int index_2);
+int get_high_pr_index_pq (pq* queue, int index_1, int index_2);
 
 //When the f_cost of a FRONTIER tile is updated, Call This.
 //SEARCHES (O(n)) for the updated Tile
 //Then Percolates the updated Tile Up.
-void update_priority (pq*& queue, Tile* tile);
+void update_priority_pq (pq*& queue, Tile* tile);
 
 #endif // PRIORITYQUEUE_H__
