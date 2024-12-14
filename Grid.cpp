@@ -55,8 +55,7 @@ vector <Tile*>  Grid::getShortestPath(int sx, int sy, int ex, int ey){
   print_grid();
 
   //initialize the priority queue and set's the 
-  //"cursor" Tile*
-  // a_star_queue next_best_move; //ARCHIVED
+  //"cursor" Tile.
   pq* frontier_pq = new pq;
   Tile* current_tile = start; 
 
@@ -73,12 +72,11 @@ vector <Tile*>  Grid::getShortestPath(int sx, int sy, int ex, int ey){
       int n_search_stat = n->getSearchStat();
       if (n_search_stat != EXPLORED){
         
-        //calc all the things
         int h_cost = calc_h_cost(n, end);
         int g_cost = current_tile->getGCost()+calc_travel_time(current_tile, n);
 
-        //Updates if this neighbor is a newly explored tile OR if a better path was found.
-        //adds the updated tile to the pqueue
+        //Adds/updates the Priority Queue if this neighbor is a newly explored tile OR if a better path was found.
+        //adds the newly frontiered tile to the pqueue
         //duplicates updated;
         if (n_search_stat == FAR){
           n->setCosts(h_cost,g_cost,current_tile);
@@ -91,27 +89,17 @@ vector <Tile*>  Grid::getShortestPath(int sx, int sy, int ex, int ey){
       }
     }
 
-    //Archived
-    //discards any previously explored tiles
-    //that remain at the front of the queue ()
-    //sets the next current tile to the next best option
-    /* do{
-      current_tile = next_best_move.top();
-      next_best_move.pop();
-    } while (current_tile->getSearchStat() == EXPLORED && !next_best_move.empty()); */
 
     current_tile = remove_pq(frontier_pq);
 
     print_grid();
 
-  //If the current Tile is the end, I've made it!
-  //If the current tile is NULL, then I've exhausted all frontier explores, 
-    //I've hit a dead end, so program exits to avoid infity
+  //loop ends when endgoal discovered or everything accessible is explored
   }while (current_tile !=end  && current_tile !=nullptr);
+
+  delete frontier_pq; //free the heap (memory)!
   
-  //Follows the Exit back to the Entrance
-  //Updates Tile search type to PATH and adds the Tile* to
-  //a vector. Only adds to the path if I found the End Goal.
+  //returns the path to the end goal as a vector - or an empty vector if goal not found
   vector <Tile*> shortest_path;
   if (current_tile == end){
     Tile* path_tile = current_tile;

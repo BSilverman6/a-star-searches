@@ -23,6 +23,9 @@ void insert_pq(pq*& queue, Tile* tile){
 }
 
 Tile* remove_pq(pq*& queue) {
+  if (queue->size == 0){
+    return nullptr;
+  }
   swap (queue, 0, queue->size-1);
   queue->size--;
 
