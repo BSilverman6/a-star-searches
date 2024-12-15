@@ -41,6 +41,7 @@ The **Map Generator** is a handy tool for debugging and visualizing and trying o
 ## Video Walkthrough
 
 [A* Searches - Video Supplement (Click Me!)](https://youtu.be/2v_WGBg0s1c)
+Note: At 9:30 in the video, i say the tiles have the same f-costs. That isn't the case here! It is in the other direction when the Hero is in the Bottom Left corner.
 
 ---
 To Create your own map with obstacles, all you have to do is edit a few lines in the map_generator.cpp file. There is a short demo at the end of the video walkthrough.
