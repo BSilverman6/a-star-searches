@@ -13,7 +13,7 @@ using namespace std;
 int main(){
     Grid* my_grid = new Grid();
 
-    //Tutorial!
+    //Tutorial! (See video for more info)
     my_grid->setUpMap(5); //change this to change the dimension
     vector <int> walls = {2,1,2,2,2,3}; //Use X, Y pairs based on the square dimension above. Axes run from [0:Dimension-1]
     vector <int> brambles = {0,1,0,3,1,1,1,3,3,2,4,2 }; //again, x,y,   x2,y2... pairs
@@ -28,6 +28,8 @@ int main(){
     int e_x = 2; //Input Ending X Y coordinates (for the Hero)
     int e_y = 0; //update
     my_grid->addCharacters(s_x,s_y, e_x,e_y); 
+
+    //To See some other cases, comment out the tutorial above, and uncomment the blocks below!
 
 
     //Level Dead End Case
@@ -119,6 +121,9 @@ int main(){
     my_grid->addCharacters(s_x,s_y, e_x,e_y); */
 
 
+
+
+    //keep this uncommented
     vector <Tile*> short_path = my_grid->getShortestPath(s_x,s_y, e_x,e_y);
     for (auto v: short_path){
         cout<<"("<<v->getXCoord()<<","<<v->getYCoord()<<")"<<endl;;
