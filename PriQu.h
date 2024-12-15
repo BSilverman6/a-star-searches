@@ -56,3 +56,5 @@ int get_high_pr_index_pq (pq* queue, int index_1, int index_2);
 void update_priority_pq (pq*& queue, Tile* tile);
 
 #endif // PRIORITYQUEUE_H__
+
+//Final Commit!

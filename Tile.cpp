@@ -9,9 +9,9 @@ Tile::Tile(int x, int y) {
   y_co = y;
 
   terrain_type = FIELD;
-  h_cost = -1;
-  g_cost = -1;
-  f_cost = -1;
+  h_cost = -1; //HEURISTIC (estimated travel to end))
+  g_cost = -1; //time to GET to this tile
+  f_cost = -1; //time 
   last_visited = nullptr;
   search_stat = FAR;
 
@@ -92,4 +92,4 @@ int Tile::getOccupiedStat(){
 }
 
 
-
+//Final Commit
