@@ -32,11 +32,27 @@ The **Tile Class** is each unit "tile" in the grid. Each tile also has data rele
 
 The **PriQue** Structure is modified from our priority queue homework assignment. Aside from modifying it to be used for storing tiles by lowest f-cost ( and within that lowest h-cost)
 
-The **Map Generator** is a handy tool for debugging and visualizing and trying out fun. It contains a main function that can be compiled and run in the terminal. To try it on your own, check out the video walkthrough for a brief how-to. 
+The **Map Generator** is a handy tool for debugging and visualizing and trying out fun. It contains a main function that can be compiled and run in the terminal. To try it on your own, check out the video walkthrough or keep reading for a brief how-to. 
 
 **NOTE:** The output in the terminal has functionality to ouput colored text that works on my personal Mac OS computer. I have not tested this in other environments, so color may not work if you try it. 
 
 ## Video Walkthrough
+
+[A* Searches - Video Supplement (Click Me!)](https://youtu.be/2v_WGBg0s1c)
+
+---
+To Create your own map with obstacles, all you have to do is edit a few lines in the map_generator.cpp file. There is a short demo at the end of the video walkthrough.
+
+See the lines of codes with comments on the right in the map_generator.cpp file. There are 7 lines of code that can be changed.
+
+1. **Add your dimension to the set_up_map(X) - 1 line**. This will create and X * X grid of Tiles. I'd reccomend keeping this under 30x30. The priority queue used in the algorithm is fixed right now at 100 (can easily be changed), and we don't want segmentation faults.
+2. **Add X,Y, coordinate pairs to the Walls and Brambles vectors - 2 lines** Note that the coordinates are from [0:Dimension), exclusive of the dimension. This will create obstacles that stop or slow the enemy.
+3. **Fill in the desired X and Y coordinates for Starting and Ending - 4 lines** The Evil Villian is the starting tile.
+
+4. Now Compile in the command line! I used \
+`g++ -std=c++11 map_generator.cpp -o map_generator`
+
+5. `./map_generator` to run your program.
 
 ## Reflection
     
