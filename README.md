@@ -3,6 +3,8 @@ Final Project for CSPB 2270: Data Structures\
 CU Boulder Fall 2024\
 Bennett Silverman - Besi9930
 
+On my honor I have neither given nor recieved unauthorized aid. 
+
 ## Overview of the Project
 The goal of this project was to implement the A* search algorithm - to find the quickest path from A-->B. 
 
