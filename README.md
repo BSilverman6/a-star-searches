@@ -28,7 +28,7 @@ In this repository, there are four main parts in this, with respective header fi
 3. PriQu (Priority Queue) Structure
 4. Map Generator
 
-The **Grid Class** is responsible for creating a 2 dimensional vector of Tile Pointers. It also contains the functions for printing the grid into 
+The **Grid Class** is responsible for creating a 2 dimensional vector of Tile Pointers. It also contains the functions for printing the grid into the console. This is also where the A* Search Algorithm resides! You can find it as the function `Vector <Tile*> get_shortest_path`.
 
 The **Tile Class** is each unit "tile" in the grid. Each tile also has data relevant to the search algorithm (f_cost, exploration status, etc.) and details for how it fits into the larger grid (Terrain Types, Occupation Status, etc.)
 
